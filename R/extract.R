@@ -1,3 +1,4 @@
+#' @export
 extract_api <- function(pkg = ".") {
   pkg <- pkgload::as.package(pkg)
   loaded <- pkgload::load_all(pkg = pkg, export_all = FALSE)
