@@ -1,43 +1,33 @@
 ns_tags <- c('export', 'exportClass', 'exportMethod', 'exportPattern',
-  'rawNamespace', 'S3method', 'import', 'importFrom', 'importClassesFrom',
-  'importMethodsFrom', 'useDynLib')
+  'rawNamespace')
 
-#' Roclet: make NAMESPACE.
+#' Roclet: make API.
 #'
-#' This roclet automates the production of a `NAMESPACE` file,
-#' see Writing R Extensions.
-#' (<http://cran.r-project.org/doc/manuals/R-exts.pdf>) for details.
+#' This roclet automates the production of a `API` file
+#' which contains the formals of all exported functions.
 #'
-#' @family roclets
 #' @export
-#' @seealso `vignette("namespace", package = "roxygen2")`
-#' @aliases export exportClass exportMethod S3method import importFrom
-#'   importClassesFrom importMethodsFrom
-namespace_roclet <- function() {
-  roclet("namespace")
+#' @seealso `vignette("api", package = "rapier")`
+#' @aliases export exportClass exportMethod S3method
+api_roclet <- function() {
+  roclet("api")
 }
 
 #' @export
-roclet_process.roclet_namespace <- function(x, parsed, base_path,
-                                            global_options = list()) {
+roclet_process.roclet_api <- function(x, parsed, base_path,
+                                      global_options = list()) {
   ns <- unlist(lapply(parsed$blocks, block_to_ns)) %||% character()
   sort_c(unique(ns))
 }
 
 #' @export
-roclet_tags.roclet_namespace <- function(x) {
+roclet_tags.roclet_api <- function(x) {
   list(
     export = tag_words_line,
     exportClass = tag_words(1),
     exportMethod = tag_words(1),
     exportPattern = tag_words(1),
-    import = tag_words(1),
-    importClassesFrom = tag_words(2),
-    importFrom = tag_words(2),
-    importMethodsFrom = tag_words(2),
-    rawNamespace = tag_code,
-    S3method = tag_words(2, 2),
-    useDynLib = tag_words(1)
+    rawNamespace = tag_code
   )
 }
 
@@ -54,26 +44,26 @@ ns_process_tag <- function(tag_name, block) {
 }
 
 #' @export
-roclet_output.roclet_namespace <- function(x, results, base_path, ...) {
-  NAMESPACE <- file.path(base_path, "NAMESPACE")
+roclet_output.roclet_api <- function(x, results, base_path, ...) {
+  API <- file.path(base_path, "API")
   results <- c(made_by("#"), results)
 
-  # Always check for roxygen2 header before overwriting NAMESPACE (#436),
+  # Always check for roxygen2 header before overwriting API (#436),
   # even when running for the first time
-  write_if_different(NAMESPACE, results, check = TRUE)
+  write_if_different(API, results, check = TRUE)
 
-  NAMESPACE
+  API
 }
 
 #' @export
-roclet_clean.roclet_namespace <- function(x, base_path) {
-  NAMESPACE <- file.path(base_path, "NAMESPACE")
-  if (made_by_roxygen(NAMESPACE)) {
-    unlink(NAMESPACE)
+roclet_clean.roclet_api <- function(x, base_path) {
+  API <- file.path(base_path, "API")
+  if (made_by_roxygen(API)) {
+    unlink(API)
   }
 }
 
-# Functions that take complete block and return NAMESPACE lines
+# Functions that take complete block and return API lines
 ns_export <- function(tag, block) {
   if (identical(tag, "")) {
     # FIXME: check for empty exports (i.e. no name)
@@ -116,7 +106,7 @@ ns_useDynLib         <- function(tag, block) {
 
   if (any(grepl(",", tag))) {
     # If there's a comma in list, don't quote output. This makes it possible
-    # for roxygen2 to support other NAMESPACE forms not otherwise mapped
+    # for roxygen2 to support other API forms not otherwise mapped
     args <- paste0(tag, collapse = " ")
     paste0("useDynLib(", args, ")")
   } else {
@@ -140,7 +130,7 @@ repeat_first <- function(name, x) {
 fun_args <- function(name, x) {
   if (any(grepl(",", x))) {
     # If there's a comma in list, don't quote output. This makes it possible
-    # for roxygen2 to support other NAMESPACE forms not otherwise mapped
+    # for roxygen2 to support other API forms not otherwise mapped
     args <- paste0(x, collapse = ", ")
   } else {
     args <- paste0(quote_if_needed(x), collapse = ",")
