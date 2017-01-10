@@ -3,3 +3,4 @@
 S3method(format,rapier)
 S3method(print,rapier)
 export(extract_api)
+export(write_api_to_file)

@@ -6,6 +6,17 @@ extract_api <- function(pkg = ".") {
 }
 
 #' @export
+write_api_to_file <- function(pkg = ".", path = NULL) {
+  pkg <- pkgload::as.package(pkg)
+  if (is.null(path)) {
+    path <- file.path(pkg$path, "API")
+  }
+  api <- extract_api(pkg)
+  writeLines(format(api), path)
+  message("API written to ", path)
+}
+
+#' @export
 print.rapier <- function(x, ...) {
   cat(format(x), sep = "\n")
 }
