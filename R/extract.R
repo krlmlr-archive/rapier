@@ -13,18 +13,19 @@ print.rapier <- function(x, ...) {
 format.rapier <- function(x, ...) {
   c(
     format_caption("API for ", x$name, " package", level = 1),
-    add_caption("Exports", format_exports(x))
+    add_caption("Exports", format_exports(x)),
+    add_caption("S3 methods", format_s3_methods(x))
   )
 }
 
 format_caption <- function(..., level = 2) {
-  c(paste0(paste(rep("#", level), collapse = ""), " ", ...), "")
+  c(paste0(paste(rep("#", level), collapse = ""), " ", ...))
 }
 
 add_caption <- function(caption, x) {
   if (length(x) == 0L) {
     character()
   } else {
-    c(format_caption(caption), x)
+    c("", format_caption(caption), "", x)
   }
 }
