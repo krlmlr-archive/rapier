@@ -1,9 +1,9 @@
 Package: rapier
-Title: What the Package Does (one line, title case)
+Title: Extract the API of a Package
 Version: 0.0-0
 Authors@R: person("Kirill", "Müller", role = c("aut", "cre"), email = "krlmlr+r@mailbox.org")
-Description: What the package does (one paragraph).
-Depends: R (>= 3.3.2)
+Description: Constructs a list of exported functions and methods for a package.
+    This is useful to verify if a package's API has changed between releases.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
