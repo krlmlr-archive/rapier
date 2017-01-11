@@ -1,3 +1,7 @@
+# PROJECT HAS BEEN MERGED
+
+Development continues in https://github.com/r-pkgs/functionmap2.
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 rapier
 ======
