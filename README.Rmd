@@ -1,0 +1,39 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# rapier
+
+The goal of rapier is to create a list of exported functions and methods for a package.
+This is useful to verify if a package's API has changed between releases.
+
+## Example
+
+```{r example, echo = FALSE, message=FALSE, results="hide"}
+devtools::load_all()
+```
+
+```{r}
+rapier::extract_api("../tibble")
+```
+
+## Installation
+
+Install from GitHub via
+
+```
+# install.packages("remotes")
+remotes::install_github("krlmlr/rapier")
+```
